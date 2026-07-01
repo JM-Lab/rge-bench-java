@@ -1,0 +1,15 @@
+{
+  "note": "Adversarial edge probes. No agreed oracle; expected omitted.",
+  "vectors": [
+    {"vector_id":"tmp.adv_empty_both","axis":"tamper_fail_closed","inputs":{"stored_digest":"","recomputed_digest":""}},
+    {"vector_id":"hsd.adv_empty_hard","axis":"hard_soft_digest","inputs":{"hard_stored":"","hard_recomputed":"","soft_a":"x","soft_b":"x"}},
+    {"vector_id":"dsc.adv_granted_null","axis":"delegated_scope","inputs":{"granted":null,"used":["read"]}},
+    {"vector_id":"dsc.adv_used_null","axis":"delegated_scope","inputs":{"granted":["read"],"used":null}},
+    {"vector_id":"fmt.adv_numeric_type","axis":"format_equivalence","inputs":{"a":{"shape":"json","semantic":{"n":1}},"b":{"shape":"yaml","semantic":{"n":1.0}}}},
+    {"vector_id":"fmt.adv_key_order","axis":"format_equivalence","inputs":{"a":{"shape":"json","semantic":{"p":"1","q":"2"}},"b":{"shape":"yaml","semantic":{"q":"2","p":"1"}}}},
+    {"vector_id":"suff.adv_valid_missing","axis":"sufficiency","inputs":{"coverage":"complete"}},
+    {"vector_id":"scc.adv_tie_low","axis":"source_class_ceiling","inputs":{"source_class":"producer_reported","claim":"asserted"}},
+    {"vector_id":"tmp.adv_recomp_absent","axis":"tamper_fail_closed","inputs":{"stored_digest":"abc"}},
+    {"vector_id":"mdc.adv_both_empty","axis":"mcp_description_code","inputs":{"declared_interface":[],"code_effects":[]}}
+  ]
+}

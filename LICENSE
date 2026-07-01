@@ -1,0 +1,17 @@
+rge-bench-java: license
+
+An independent reproduction of the rge-bench kit, dual-licensed to mirror it.
+
+- Code (src/, pom.xml, mvnw, .mvn/): Apache License 2.0.
+  SPDX-License-Identifier: Apache-2.0
+  Full text: LICENSES/Apache-2.0.txt (https://www.apache.org/licenses/LICENSE-2.0)
+  Copyright 2026 Jemin Huh.
+
+- Docs (README.md, NOTICE): Creative Commons Attribution 4.0 International (CC-BY-4.0).
+  SPDX-License-Identifier: CC-BY-4.0
+  Full text: LICENSES/CC-BY-4.0.txt (https://creativecommons.org/licenses/by/4.0/)
+  Copyright 2026 Jemin Huh.
+
+- vectors.json: an unmodified, vendored copy of the rge-bench v0 corpus, under
+  CC-BY-4.0, Copyright 2026 RGE-Bench authors. Not relicensed. Reuse requires
+  attribution to RGE-Bench (https://github.com/rge-bench/rge-bench).

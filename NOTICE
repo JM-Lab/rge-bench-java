@@ -1,0 +1,7 @@
+rge-bench-java
+Copyright 2026 Jemin Huh
+
+vectors.json is an unmodified, vendored copy of the rge-bench v0 corpus from
+https://github.com/rge-bench/rge-bench (Copyright 2026 RGE-Bench authors),
+licensed CC-BY-4.0; reuse requires attribution to RGE-Bench. All other files are
+original work: code under Apache-2.0, docs under CC-BY-4.0.
