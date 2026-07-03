@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package dev.jmlab.rgecheck;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -55,11 +56,9 @@ final class Axes {
 	}
 
 	private static String coverageHonesty(Map<String, Object> in) {
-		Object declared = in.get("declared_cases");
-		if (declared == null) {
+		if (!(in.get("declared_cases") instanceof List<?> cases)) {
 			return "invalid";
 		}
-		List<?> cases = (List<?>) declared;
 		Map<?, ?> results = in.get("case_results") instanceof Map<?, ?> m ? m : Map.of();
 		if (cases.stream().anyMatch(c -> "failed".equals(results.get(c)))) {
 			return "refuted";
@@ -68,7 +67,7 @@ final class Axes {
 	}
 
 	private static String formatEquivalence(Map<String, Object> in) {
-		return Objects.equals(semantic(in.get("a")), semantic(in.get("b"))) ? "equivalent" : "distinct";
+		return semanticEquals(semantic(in.get("a")), semantic(in.get("b"))) ? "equivalent" : "distinct";
 	}
 
 	private static Object semantic(Object side) {
@@ -77,7 +76,8 @@ final class Axes {
 
 	private static String tamperFailClosed(Map<String, Object> in) {
 		Object stored = in.get("stored_digest");
-		return stored != null && stored.equals(in.get("recomputed_digest")) ? "accepted" : "rejected";
+		Object recomputed = in.get("recomputed_digest");
+		return present(stored) && present(recomputed) && stored.equals(recomputed) ? "accepted" : "rejected";
 	}
 
 	private static String incompleteVisibility(Map<String, Object> in) {
@@ -85,7 +85,7 @@ final class Axes {
 	}
 
 	private static String delegatedScope(Map<String, Object> in) {
-		if (!in.containsKey("granted") || !in.containsKey("used")) {
+		if (!(in.get("granted") instanceof List) || !(in.get("used") instanceof List)) {
 			return "invalid";
 		}
 		return asSet(in.get("granted")).containsAll(asList(in.get("used"))) ? "within_grant" : "exceeds_grant";
@@ -93,7 +93,8 @@ final class Axes {
 
 	private static String hardSoftDigest(Map<String, Object> in) {
 		Object hardStored = in.get("hard_stored");
-		if (hardStored == null || !hardStored.equals(in.get("hard_recomputed"))) {
+		Object hardRecomputed = in.get("hard_recomputed");
+		if (!present(hardStored) || !present(hardRecomputed) || !hardStored.equals(hardRecomputed)) {
 			return "rejected_hard";
 		}
 		return Objects.equals(in.get("soft_a"), in.get("soft_b")) ? "soft_equivalent" : "soft_divergent";
@@ -119,6 +120,39 @@ final class Axes {
 			return "over_declared";
 		}
 		return "consistent";
+	}
+
+	private static boolean present(Object value) {
+		return value instanceof String s && !s.isEmpty();
+	}
+
+	private static boolean semanticEquals(Object a, Object b) {
+		if (a instanceof Number na && b instanceof Number nb) {
+			return new BigDecimal(na.toString()).compareTo(new BigDecimal(nb.toString())) == 0;
+		}
+		if (a instanceof Map<?, ?> ma && b instanceof Map<?, ?> mb) {
+			if (ma.size() != mb.size()) {
+				return false;
+			}
+			for (Map.Entry<?, ?> e : ma.entrySet()) {
+				if (!mb.containsKey(e.getKey()) || !semanticEquals(e.getValue(), mb.get(e.getKey()))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		if (a instanceof List<?> la && b instanceof List<?> lb) {
+			if (la.size() != lb.size()) {
+				return false;
+			}
+			for (int i = 0; i < la.size(); i++) {
+				if (!semanticEquals(la.get(i), lb.get(i))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return Objects.equals(a, b);
 	}
 
 	private static List<?> asList(Object value) {

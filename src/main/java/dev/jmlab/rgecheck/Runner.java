@@ -18,7 +18,7 @@ import tools.jackson.databind.ObjectMapper;
 @Component
 class Runner implements CommandLineRunner {
 
-	private static final String PINNED_VECTORS_DIGEST = "8603868389a18f8de6f593b03c2c9947bf145c79491f2b095e1da380b6abbc95";
+	private static final String PINNED_VECTORS_DIGEST = "e769822bc6c9e31085da7b1a17b163b9747fe0d04314fbb8685d4e612087c7cb";
 
 	private final ObjectMapper mapper;
 

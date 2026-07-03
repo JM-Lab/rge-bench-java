@@ -15,9 +15,9 @@ reproduction of the rge-bench v0 corpus on a non-Python stack.
 
 ## Result (rge-bench v0)
 
-- All 62 vectors reproduce: every outcome equals the contract's `expected`, and the kit's `checker.py`
+- All 71 vectors reproduce: every outcome equals the contract's `expected`, and the kit's `checker.py`
   scores `pass` on all eleven axes (including the `coverage_honesty` axis).
-- `vectors_digest` reproduces byte-for-byte (`sha256:860386...`) under the kit's sorted-keys
+- `vectors_digest` reproduces byte-for-byte (`sha256:e76982...`) under the kit's sorted-keys
   canonicalization; the same ObjectMapper in insertion order yields a different digest, which is why
   the canonicalization has to be declared next to the digest.
 
@@ -28,12 +28,15 @@ reproduction of the rge-bench v0 corpus on a non-Python stack.
 - `Axes.java` was written from the contract before the kit's own `ref_example.py` was read. The kit's
   reference checker was run only afterward, to score and compare.
 
-## Edge probes
+## Contract edges
 
-`adversarial-edge-vectors.json` holds ten out-of-corpus probes that expose three places where the
-contract wording leaves language-specific behavior implicit: present vs empty (`""`), null vs absent,
-and numeric semantic equality (`1` vs `1.0`). They do not affect the current 62 vectors; they only
-appear once the inputs are pushed outside the corpus.
+`adversarial-edge-vectors.json` holds the ten probes that first surfaced three under-specified
+edges: present vs empty (`""`), null / absent / non-array, and numeric semantic equality (`1` vs
+`1.0`). The kit has since promoted those edges into the corpus as oracled vectors and declared their
+language-neutral semantics, and `Axes.java` now implements that declaration directly: a digest is
+present only when it is a non-empty string (missing / `null` / `""` fail closed), a missing or
+non-array scope is `invalid`, and semantic equality compares numbers by value while ignoring object
+key order and preserving array order.
 
 ## Run
 
