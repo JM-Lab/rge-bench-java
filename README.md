@@ -15,9 +15,9 @@ reproduction of the rge-bench v0 corpus on a non-Python stack.
 
 ## Result (rge-bench v0)
 
-- All 60 vectors reproduce: every outcome equals the contract's `expected`, and the kit's `checker.py`
+- All 62 vectors reproduce: every outcome equals the contract's `expected`, and the kit's `checker.py`
   scores `pass` on all eleven axes (including the `coverage_honesty` axis).
-- `vectors_digest` reproduces byte-for-byte (`sha256:00f0feda...`) under the kit's sorted-keys
+- `vectors_digest` reproduces byte-for-byte (`sha256:860386...`) under the kit's sorted-keys
   canonicalization; the same ObjectMapper in insertion order yields a different digest, which is why
   the canonicalization has to be declared next to the digest.
 
@@ -32,7 +32,7 @@ reproduction of the rge-bench v0 corpus on a non-Python stack.
 
 `adversarial-edge-vectors.json` holds ten out-of-corpus probes that expose three places where the
 contract wording leaves language-specific behavior implicit: present vs empty (`""`), null vs absent,
-and numeric semantic equality (`1` vs `1.0`). They do not affect the current 60 vectors; they only
+and numeric semantic equality (`1` vs `1.0`). They do not affect the current 62 vectors; they only
 appear once the inputs are pushed outside the corpus.
 
 ## Run
